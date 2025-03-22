@@ -1,0 +1,42 @@
+/* 🌟 Training Videos Page */
+.videos-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .video-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .video-card video {
+    border-radius: 5px;
+    max-width: 100%;
+  }
+  
+  .video-card h3 {
+    margin: 10px 0 5px;
+  }
+  
+  .video-card p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .videos-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

@@ -1,0 +1,28 @@
+.progress-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .progress-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .progress-table th, .progress-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .progress-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .restricted {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+  }
+  
