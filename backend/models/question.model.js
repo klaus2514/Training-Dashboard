@@ -1,13 +1,44 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-  videoId: { type: mongoose.Schema.Types.ObjectId, ref: "Video", required: true },
-  questionText: { type: String, required: true },
-  options: { type: [String], required: true },
-  correctAnswer: { type: String, required: true },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  question: {
+    type: String,
+    required: [true, "Question text is required"],
+    trim: true,
+  },
+  options: {
+    type: [String],
+    required: [true, "Options are required"],
+    validate: {
+      validator: function (v) {
+        return (
+          v.length === 4 &&
+          v.every((option) => typeof option === "string" && option.trim().length > 0)
+        );
+      },
+      message: "Exactly 4 non-empty options are required",
+    },
+  },
+  correctAnswer: {
+    type: Number,
+    required: [true, "Correct answer is required"],
+    min: 0,
+    max: 3,
+  },
+  videoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Video",
+    required: true,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-// ✅ Prevent overwriting the model
-const Question = mongoose.models.Question || mongoose.model("Question", questionSchema);
-module.exports = Question;
+module.exports = mongoose.model("Question", questionSchema);

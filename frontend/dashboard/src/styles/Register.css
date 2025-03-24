@@ -1,0 +1,78 @@
+/* styles/Register.css */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+  
+  .register-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .register-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-container input,
+  .register-container select {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .register-container button {
+    padding: 0.75rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .register-container button:hover {
+    background-color: #218838;
+  }
+  
+  .login-link {
+    margin-top: 1rem;
+    text-align: center;
+    color: #666;
+  }
+  
+  .login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 480px) {
+    .register-container h2 {
+      font-size: 1.5rem;
+    }
+  
+    .register-container form {
+      padding: 1.5rem;
+    }
+  
+    .register-container input,
+    .register-container select,
+    .register-container button {
+      font-size: 0.9rem;
+    }
+  }

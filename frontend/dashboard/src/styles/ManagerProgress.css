@@ -1,0 +1,33 @@
+/* styles/ManagerProgress.css */
+.manager-progress-container {
+  padding: 20px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+.manager-progress-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.employee-progress {
+  margin-bottom: 30px;
+}
+
+.employee-progress h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .manager-progress-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .employee-progress h3 {
+    font-size: 1.25rem;
+  }
+}

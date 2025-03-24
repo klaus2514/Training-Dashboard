@@ -3,9 +3,9 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import "../styles/UploadVideo.css";
 
-const socket = io("http://localhost:5000", { transports: ["websocket"] }); // ✅ Ensure WebSocket transport
+const socket = io("http://localhost:5000", { transports: ["websocket"] });
 
-const UploadVideo = () => {
+const UploadVideo = ({ onUploadSuccess }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -38,8 +38,10 @@ const UploadVideo = () => {
       setCategory("");
       setFile(null);
 
-      // ✅ Notify employees about the new video
-      socket.emit("newVideo", res.data);
+      socket.emit("videoAdded", res.data.video);
+      if (onUploadSuccess) {
+        onUploadSuccess(res.data.video);
+      }
     } catch (error) {
       console.error("Error uploading video:", error.response);
       alert("Error uploading video: " + (error.response?.data?.message || "Server Error"));
@@ -50,9 +52,26 @@ const UploadVideo = () => {
     <div className="upload-container">
       <h2>Upload Training Video</h2>
       <form onSubmit={handleUpload} className="upload-form">
-        <input type="text" placeholder="Video Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} required />
-        <input type="file" accept="video/*" onChange={(e) => setFile(e.target.files[0])} required />
+        <input
+          type="text"
+          placeholder="Video Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        />
+        <input
+          type="file"
+          accept="video/*"
+          onChange={(e) => setFile(e.target.files[0])}
+          required
+        />
         <button type="submit">Upload</button>
       </form>
     </div>

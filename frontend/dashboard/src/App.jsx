@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DashboardLayout from "./components/Slidebar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -11,15 +12,20 @@ import Notifications from "./components/Notification";
 function App() {
   return (
     <Router>
-      <Notifications /> {/* ✅ Show real-time notifications */}
+      <Notifications />
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Public Routes (without sidebar) */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/videos" element={<Videos />} />
-        <Route path="/video/:id" element={<VideoPage />} />
-        <Route path="/track-progress" element={<TrackProgress />} /> {/* ✅ Manager progress tracking */}
+
+        {/* Protected Routes (with sidebar) */}
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/videos" element={<Videos />} />
+          <Route path="/video/:id" element={<VideoPage />} />
+          <Route path="/track-progress" element={<TrackProgress />} />
+        </Route>
       </Routes>
     </Router>
   );

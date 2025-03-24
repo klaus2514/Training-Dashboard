@@ -1,51 +1,57 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "../styles/Auth.css";
+import "../styles/Login.css";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/"); // Prevent logged-in users from accessing login page
+    if (location.state?.registrationSuccess) {
+      setSuccessMessage("Registration successful! Please log in with your credentials.");
+      navigate(location.pathname, { replace: true, state: {} });
     }
-  }, [navigate]);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  }, [location, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      alert("Login successful!");
       navigate("/");
-
-      // Disable back button after login
-      window.history.pushState(null, null, window.location.href);
-      window.addEventListener("popstate", function () {
-        window.history.pushState(null, null, window.location.href);
-      });
     } catch (error) {
-      alert("Error: " + error.response.data.message);
+      alert("Login failed: " + (error.response?.data?.message || "Server Error"));
     }
   };
 
   return (
-    <div className="auth-container">
+    <div className="login-container">
       <h2>Login</h2>
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">Login</button>
       </form>
-      <p className="auth-link">
-        Not registered? <a href="/register">Register here</a>
+      <p className="register-link">
+        Don't have an account? <Link to="/register">Register here</Link>
       </p>
     </div>
   );

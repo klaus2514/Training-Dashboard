@@ -9,13 +9,13 @@ const Profile = () => {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser) {
-      navigate("/login"); // Redirect if no user
+      navigate("/login");
     } else {
       setUser(storedUser);
     }
   }, [navigate]);
 
-  if (!user) return null; // Prevent rendering if user is null
+  if (!user) return null;
 
   return (
     <div className="profile-container">

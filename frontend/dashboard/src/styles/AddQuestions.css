@@ -1,32 +1,92 @@
-.questions-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .questions-container input {
-    width: 90%;
-    margin: 10px 0;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .questions-container button {
-    background-color: #007bff;
-    color: white;
-    border: none;
+/* styles/AddQuestions.css */
+.add-questions-container {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.add-questions-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.question-block {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.question-block input,
+.question-block select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.add-btn:hover {
+  background-color: #218838;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 480px) {
+  .question-block {
     padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 10px;
   }
-  
-  .questions-container button:hover {
-    background-color: #0056b3;
+
+  .question-block input,
+  .question-block select {
+    font-size: 0.9rem;
   }
-  
+
+  .add-btn,
+  button[type="submit"],
+  .remove-btn {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}

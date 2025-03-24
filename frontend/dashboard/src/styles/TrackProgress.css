@@ -1,28 +1,54 @@
+/* styles/TrackProgress.css */
 .progress-container {
-    width: 80%;
-    margin: auto;
-    text-align: center;
+  padding: 20px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+.progress-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.progress-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+}
+
+.progress-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.progress-card p {
+  margin-top: 10px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .progress-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  
-  .progress-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+
+  .progress-container h2 {
+    font-size: 1.5rem;
   }
-  
-  .progress-table th, .progress-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+}
+
+@media (max-width: 480px) {
+  .progress-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .progress-table th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .restricted {
-    text-align: center;
-    color: red;
-    font-weight: bold;
-  }
-  
+}

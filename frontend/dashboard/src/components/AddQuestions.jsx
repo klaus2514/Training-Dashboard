@@ -3,80 +3,106 @@ import axios from "axios";
 import "../styles/AddQuestions.css";
 
 const AddQuestions = ({ videoId }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [questions, setQuestions] = useState([]);
-  const [newQuestion, setNewQuestion] = useState({ questionText: "", options: ["", "", "", ""], correctAnswer: "" });
+  const [questions, setQuestions] = useState([
+    { question: "", options: ["", "", "", ""], correctAnswer: null },
+  ]);
 
-  if (!user || user.role !== "manager") {
-    return <p className="restricted">Only managers can add questions.</p>;
-  }
-
-  const handleQuestionChange = (e) => {
-    setNewQuestion({ ...newQuestion, questionText: e.target.value });
-  };
-
-  const handleOptionChange = (index, value) => {
-    const updatedOptions = [...newQuestion.options];
-    updatedOptions[index] = value;
-    setNewQuestion({ ...newQuestion, options: updatedOptions });
-  };
-
-  const handleCorrectAnswerChange = (e) => {
-    setNewQuestion({ ...newQuestion, correctAnswer: e.target.value });
-  };
-
-  const addQuestionToList = () => {
-    if (!newQuestion.questionText || !newQuestion.correctAnswer || newQuestion.options.includes("")) {
-      alert("Please complete the question and options before adding.");
-      return;
+  const handleQuestionChange = (index, field, value) => {
+    const updatedQuestions = [...questions];
+    if (field === "question") {
+      updatedQuestions[index][field] = value;
+    } else if (field === "correctAnswer") {
+      updatedQuestions[index][field] = Number(value); // Store as number
+    } else {
+      updatedQuestions[index].options[field] = value;
     }
-
-    setQuestions([...questions, { ...newQuestion }]);
-    setNewQuestion({ questionText: "", options: ["", "", "", ""], correctAnswer: "" });
+    setQuestions(updatedQuestions);
   };
 
-  const handleSubmit = async () => {
+  const addQuestion = () => {
+    setQuestions([...questions, { question: "", options: ["", "", "", ""], correctAnswer: null }]);
+  };
+
+  const removeQuestion = (index) => {
+    if (questions.length > 1) {
+      setQuestions(questions.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Authentication error: Please log in again.");
+      // Validate that all questions have a correct answer selected
+      const invalidQuestions = questions.filter(q => q.correctAnswer === null);
+      if (invalidQuestions.length > 0) {
+        alert("Please select a correct answer for each question.");
         return;
       }
-  
-      const user = JSON.parse(localStorage.getItem("user"));
-  
-      console.log("Sending data:", { videoId, questions, createdBy: user._id }); // ✅ Log `createdBy`
-  
+
+      const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:5000/api/questions/add",
-        { videoId, questions, createdBy: user._id }, // 🔴 Include `createdBy`
+        { videoId, questions },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
       alert("Questions added successfully!");
-      setQuestions([]);
+      setQuestions([{ question: "", options: ["", "", "", ""], correctAnswer: null }]);
     } catch (error) {
-      console.error("Error adding questions:", error.response);
-      alert("Error adding questions: " + (error.response?.data?.message || "Server Error"));
+      console.error("Error adding questions:", error);
+      alert("Failed to add questions: " + (error.response?.data?.message || "Server Error"));
     }
   };
-  
-  
 
   return (
-    <div className="questions-container">
-      <h3>Add MCQ Questions</h3>
-      <input type="text" placeholder="Enter Question" value={newQuestion.questionText} onChange={handleQuestionChange} required />
-      
-      {newQuestion.options.map((option, index) => (
-        <input key={index} type="text" placeholder={`Option ${index + 1}`} value={option} onChange={(e) => handleOptionChange(index, e.target.value)} required />
-      ))}
-
-      <input type="text" placeholder="Correct Answer" value={newQuestion.correctAnswer} onChange={handleCorrectAnswerChange} required />
-
-      <button onClick={addQuestionToList}>Add Another Question</button>
-
-      {questions.length > 0 && <button onClick={handleSubmit}>Submit All Questions</button>}
+    <div className="add-questions-container">
+      <h3>Add Questions for Video</h3>
+      <form onSubmit={handleSubmit}>
+        {questions.map((q, index) => (
+          <div key={index} className="question-block">
+            <input
+              type="text"
+              placeholder={`Question ${index + 1}`}
+              value={q.question}
+              onChange={(e) => handleQuestionChange(index, "question", e.target.value)}
+              required
+            />
+            {q.options.map((option, optIndex) => (
+              <input
+                key={optIndex}
+                type="text"
+                placeholder={`Option ${optIndex + 1}`}
+                value={option}
+                onChange={(e) => handleQuestionChange(index, optIndex, e.target.value)}
+                required
+              />
+            ))}
+            <select
+              value={q.correctAnswer === null ? "" : q.correctAnswer}
+              onChange={(e) => handleQuestionChange(index, "correctAnswer", e.target.value)}
+              required
+            >
+              <option value="">Select Correct Answer</option>
+              <option value="0">Option 1</option>
+              <option value="1">Option 2</option>
+              <option value="2">Option 3</option>
+              <option value="3">Option 4</option>
+            </select>
+            {questions.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeQuestion(index)}
+                className="remove-btn"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        ))}
+        <button type="button" onClick={addQuestion} className="add-btn">
+          Add Another Question
+        </button>
+        <button type="submit">Submit Questions</button>
+      </form>
     </div>
   );
 };
